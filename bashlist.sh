@@ -1,6 +1,6 @@
 #!/bin/bash
 #this script adds items to a list in a seperate text file
-conf=$HOME/list.txt		#name of config file
+conf=$HOME/.list.txt		#name of config file
 if [[ ! -f $conf ]]; then
 	touch $conf		#creates config file if it doesn't exist
 	echo conf file $conf created
@@ -21,12 +21,12 @@ function help {		#this is the help message
 	echo this script maintains a list of things for you
 	echo
 	echo using -h or --help will display this message
-	echo using -l or --list will read to you the list
+	echo using -l or --list will read to you the list without clearing the screen
 	echo using -f or --fpop will remove the first item from the list
 	echo using -b or --bpop will remove the first item from the list
 	echo using -r or --remove and a number will remove that number item from the list
 	echo using -r or --remove alone works the same as -f or --fpop
-	echo using no argument works the same as -c and --conf
+	echo using no argument works the same as -l and --list, except it clears the screen
 	echo any other argument is read as input and added to the bottom of the list
 	echo
 	echo the list is kept in $conf
@@ -69,12 +69,14 @@ elif [ -z "$1" ]; then
 	readit
 	exit
 else
-	clear
 	if [ "$1" = -h ] || [ "$1" = --help ]; then		#catch for help option
+		clear
+		readit
 		help
 	elif [ "$1" = -l ] || [ "$1" = --list ]; then		#catch for list option
 		readit
 	elif [ "$1" = -f ] || [ "$1" = --fpop ]; then		#catch for fpop option
+		clear
 		if [[ -s $conf ]] ; then		#checking for an empty list
 			line=$(head -n 1 $conf)
 			echo removing first entry, $line
@@ -84,6 +86,7 @@ else
 			echo list is empty
 		fi;
 	elif [ "$1" = -b ] || [ "$1" = --bpop ]; then		#catch for bpop option
+		clear
 		if [[ -s $conf ]] ; then		#checking for an empty list
 			line=$(tail -1 $conf | head -1)
 			echo removing last entry, $line
@@ -93,6 +96,7 @@ else
 			echo config list is empty
 		fi;
 	else
+		clear
 		echo "$1" >> $conf		#adding argument to list
 		echo "$1" added to conf file
 		readit

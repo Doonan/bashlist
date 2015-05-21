@@ -16,7 +16,6 @@ function readit {		#this is the read through list function
 }
 
 function help {		#this is the help message
-	readit
 	echo this is the 'bashlist' script help message
 	echo this script maintains a list of things for you
 	echo
@@ -98,7 +97,7 @@ else
 	else
 		clear
 		echo "$1" >> $conf		#adding argument to list
-		echo "$1" added to conf file
+		echo "$1" added to the list
 		readit
 	fi
 	exit

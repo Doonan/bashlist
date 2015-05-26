@@ -13,6 +13,9 @@ function readit {		#this is the read through list function
 		echo $i - $l
 		((i++))
 	done <$conf
+	if [[ "$i" = 1 ]]; then
+		echo '- its empty!'
+	fi
 }
 
 function help {		#this is the help message
@@ -22,9 +25,10 @@ function help {		#this is the help message
 	echo using -h or --help will display this message
 	echo using -l or --list will read to you the list without clearing the screen
 	echo using -f or --fpop will remove the first item from the list
-	echo using -b or --bpop will remove the first item from the list
+	echo using -b or --bpop will remove the last item from the list
 	echo using -r or --remove and a number will remove that number item from the list
 	echo using -r or --remove alone works the same as -f or --fpop
+	echo using -e or --empty will clear the entire list
 	echo using no argument works the same as -l and --list, except it clears the screen
 	echo any other argument is read as input and added to the bottom of the list
 	echo
@@ -94,6 +98,11 @@ else
 		else
 			echo config list is empty
 		fi;
+	elif [ "$1" = -e ] || [ "$1" = --empty ]; then		#catch for bpop option
+		clear
+		echo clearing the whole list
+		> $conf
+		readit
 	else
 		clear
 		echo "$1" >> $conf		#adding argument to list
